@@ -10,7 +10,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.demo.composedemo.ui.theme.ComposeDemoTheme
 
@@ -42,7 +47,7 @@ fun LayoutsCodelab() {
                     }
                 })
         }) { innerPadding ->
-        BodyContent(
+        ModifiedBodyContent(
             Modifier
                 .padding(innerPadding)
                 .padding(8.dp)
@@ -58,10 +63,84 @@ fun BodyContent(modifier: Modifier = Modifier) {
     }
 }
 
+/*#7*/
 @Preview
 @Composable
 fun PhotographyCardPreview() {
     ComposeDemoTheme {
         LayoutsCodelab()
+    }
+}
+
+fun Modifier.firstBaselineTop(firstBaselineToTop: Dp) = this.then(
+    // 基于 Compose 布局原则，只能测量一次子
+    layout { measurable, constraints ->
+        // Measurable 调用 measure() 的返回值是一个可以通过调用 placeRelative(x, y) 来指定位置的 Placeable
+        val placeable = measurable.measure(constraints)
+        // 这个 composable 已经测量了，现在需要通过调用接受 lambda 的 layout(width, height) 来计算大小并指定位置
+
+        // 这个例子，确认当前是否有 FirstBaseLine
+        check(placeable[FirstBaseline] != AlignmentLine.Unspecified)
+        val firstBaseline = placeable[FirstBaseline]
+        // 高度
+        val placeableY = firstBaselineToTop.roundToPx() - firstBaseline
+        val height = placeable.height + placeableY
+
+        layout(placeable.width, height) {
+            // 调用 placeable.placeRelative(x, y) 来放置 composable
+            placeable.placeRelative(0, placeableY)
+        }
+    }
+)
+
+@Preview
+@Composable
+fun TextWithPaddingToBaselinePreview() {
+    ComposeDemoTheme {
+        Text(text = "Hi, principle of Layout in Compose!", Modifier.firstBaselineTop(32.dp))
+    }
+}
+
+@Preview
+@Composable
+fun TextWithNormalPaddingPreview() {
+    ComposeDemoTheme {
+        Text(text = "Hi, principle of Layout in Compose!", Modifier.padding(top = 32.dp))
+    }
+}
+
+@Composable
+fun MyOwnColumn(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = content
+    ) { measurables, constrains ->
+        // 不光要测量每个子，还要关注最大宽、高
+        val placeable = measurables.map { measurable ->
+            measurable.measure(constrains)
+        }
+
+        var yPosition = 0
+
+        layout(constrains.maxWidth, constrains.maxHeight) {
+            placeable.forEach { placeable ->
+                placeable.placeRelative(x = 0, y = yPosition)
+
+                yPosition += placeable.height
+            }
+        }
+    }
+}
+
+@Composable
+fun ModifiedBodyContent(modifier: Modifier = Modifier) {
+    MyOwnColumn(modifier.padding(8.dp)) {
+        Text("MyOwnColumn")
+        Text("places items")
+        Text("vertically.")
+        Text("We've done it by hand!")
     }
 }
