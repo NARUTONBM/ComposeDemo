@@ -164,14 +164,15 @@ fun StaggeredGrid(
         modifier = modifier,
         content = content
     ) { measurables, constrains ->
+        // 记录宽高
         val rowWidths = IntArray(rows) { 0 }
-
         val rowHeights = IntArray(rows) { 0 }
 
         val placeables = measurables.mapIndexed { index, measurable ->
 
             val placeable = measurable.measure(constrains)
 
+            // 记录最大宽高
             val row = index % rows
             rowWidths[row] += placeable.width
             rowHeights[row] = kotlin.math.max(rowHeights[row], placeable.height)
@@ -179,18 +180,21 @@ fun StaggeredGrid(
             placeable
         }
 
+        // 网格的宽度就是最大宽度
         val width = rowWidths.maxOrNull()
             ?.coerceIn(constrains.minHeight.rangeTo(constrains.maxWidth)) ?: constrains.minWidth
-
+        // 高是高度约束下的每行最高的总和
         val height = rowHeights.sumBy { it }
             .coerceIn(constrains.minHeight.rangeTo(constrains.maxHeight))
-
+        // 每行的 Y 坐标基于前面行的高度累计
         val rowY = IntArray(rows) { 0 }
         for (i in 1 until rows) {
             rowY[i] = rowY[i - 1] + rowHeights[i - 1]
         }
 
+        // 设置父布局的尺寸
         layout(width, height) {
+            // X 坐标，所在行放置一个叠加一次
             val rowX = IntArray(rows) { 0 }
 
             placeables.forEachIndexed { index, placeable ->
@@ -235,6 +239,7 @@ val topics = listOf(
 
 @Composable
 fun ComplexBodyContent(modifier: Modifier = Modifier) {
+    // 用 Row 包装 StaggeredGrid 增加滑动效果
     Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
         StaggeredGrid(modifier = modifier, rows = 5) {
             for (topic in topics) {
