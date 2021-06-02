@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeDemo">
         <activity
-            android:name="com.demo.composedemo.MainActivity"
+            android:name=".stateincompose.TodoActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ComposeDemo.NoActionBar">
@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CLLayoutActivity" />
+        <activity android:name=".layoutsincompose.CLLayoutActivity" />
         <activity android:name=".stateincompose.HelloCodelabActivity" />
     </application>
 
