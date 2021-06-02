@@ -240,7 +240,14 @@ val topics = listOf(
 @Composable
 fun ComplexBodyContent(modifier: Modifier = Modifier) {
     // 用 Row 包装 StaggeredGrid 增加滑动效果
-    Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
+    // modifier 从左到右更新约束，返回从右到左的尺寸
+    Row(
+        modifier = modifier
+            .background(color = Color.LightGray)
+            .size(200.dp)
+            .padding(16.dp)
+            .horizontalScroll(rememberScrollState())
+    ) {
         StaggeredGrid(modifier = modifier, rows = 5) {
             for (topic in topics) {
                 Chip(modifier = Modifier.padding(8.dp), text = topic)
