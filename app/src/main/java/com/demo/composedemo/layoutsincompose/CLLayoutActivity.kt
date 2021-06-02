@@ -1,4 +1,4 @@
-package com.demo.composedemo
+package com.demo.composedemo.layoutsincompose
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
