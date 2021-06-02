@@ -17,8 +17,6 @@ import com.demo.composedemo.ui.theme.ComposeDemoTheme
  * @see <a href="https://developer.android.google.cn/codelabs/jetpack-compose-layouts?continue=https%3A%2F%2Fdeveloper.android.google
  * .cn%2Fcourses%2Fpathways%2Fcompose%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fjetpack-compose-layouts#9">See this </a>for more information about 【Layout in
  * Jetpack Compose】
- *
- * 注意这里
  */
 
 /**

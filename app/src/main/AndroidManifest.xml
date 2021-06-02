@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CLLayoutActivity" />
+        <activity android:name=".stateincompose.HelloCodelabActivity" />
     </application>
 
 </manifest>
