@@ -2,14 +2,11 @@ package com.demo.composedemo.stateincompose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +30,17 @@ import kotlin.random.Random
  *
  * 幂等的 composable 对于相同的输入会保持相同的输出，当然更没有 side-effect
  *
+ * State hoisting(实在不会翻) 是一种将状态上移实现 composable stateless 的模式
+ * 这种模式应用到 composable 上通常意味着给 composable 引入两个参数
+ * @param value: T 当前需要展示的数据
+ * @param onValueChange: (T) -> Unit 响应数据变化的事件
+ * 这样提升状态层级有几个重要的特性：
+ * - 单一真相源 移动状态而不是复制确保了 text 只有一个可信的数据源
+ * - 封装性     当其他 composable 发送事件到特定的 composable 时，只有它可以修改状态
+ * - 共享性     可以作为一个不可变的值被多个 composable 访问
+ * - 可拦截性   这个 composable 可以在修改状态前决定忽略或修改事件
+ * - 解耦       composable 的状态可以被存在任何地方
+ *
  * @author Randall.
  * @Date 2021-06-02.
  * @Time 23:55.
@@ -52,27 +60,8 @@ fun TodoScreen(
     onRemoveItem: (TodoItem) -> Unit
 ) {
     Column {
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(top = 8.dp)
-        ) {
-            items(items = items) {
-                TodoRow(
-                    todo = it,
-                    onItemClicked = { onRemoveItem(it) },
-                    modifier = Modifier.fillParentMaxWidth(),
-                )
-            }
-        }
-
-        // For quick testing, a random item generator button
-        Button(
-            onClick = { onAddItem(generateRandomTodoItem()) },
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-        ) {
-            Text("Add random item")
+        TodoItemInputBackground(elevate = true, modifier = Modifier.fillMaxWidth()) {
+            TodoItemInput(onItemComplete = onAddItem)
         }
     }
 }
@@ -130,3 +119,48 @@ fun PreviewTodoRow() {
     val todo = remember { generateRandomTodoItem() }
     TodoRow(todo = todo, onItemClicked = {}, modifier = Modifier.fillMaxWidth())
 }
+
+@Composable
+fun TodoInputTextField(textInput: String, onTextChange: (String) -> Unit, modifier: Modifier = Modifier) {
+    val mutableState = remember { mutableStateOf("") }
+    var value by remember { mutableStateOf("") }
+    val (text, setText) = remember { mutableStateOf("") }
+    TodoInputText(textInput, onTextChange, modifier)
+}
+
+/**
+ * onItemComplete 是一个当用户完成输入时触发的事件
+ */
+@Composable
+fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
+    val (text, setText) = remember { mutableStateOf("") }
+    Column {
+        Row(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp)
+        ) {
+            TodoInputTextField(
+                text,
+                setText,
+                Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            )
+
+            TodoEditButton(
+                onClick = {
+                    onItemComplete(TodoItem(text))
+                    setText("")
+                },
+                text = "Add",
+                modifier = Modifier.align(Alignment.CenterVertically),
+                enabled = text.isNotBlank()
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewTodoItemInput() = TodoItemInput(onItemComplete = {})
