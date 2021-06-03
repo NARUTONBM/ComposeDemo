@@ -1,7 +1,8 @@
 package com.demo.composedemo.stateincompose
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 /**
@@ -11,16 +12,39 @@ import androidx.lifecycle.ViewModel
  * @Time 0:18.
  */
 class TodoViewModel : ViewModel() {
-    private var _todoItems = MutableLiveData(listOf<TodoItem>())
-    val todoItem: LiveData<List<TodoItem>> = _todoItems
+    private var currentEditPosition by mutableStateOf(-1)
+
+    var todoItems by mutableStateOf(listOf<TodoItem>())
+        private set
+
+    val currentEditItem: TodoItem?
+        get() = todoItems.getOrNull(currentEditPosition)
+
+    fun onEditItemSelected(item: TodoItem) {
+        currentEditPosition = todoItems.indexOf(item)
+    }
+
+    fun onEditDone() {
+        currentEditPosition = -1
+    }
+
+    fun onEditItemChange(item: TodoItem) {
+        val currentItem = requireNotNull(currentEditItem)
+        require(currentItem.id == item.id) {}
+
+        todoItems = todoItems.toMutableList().also {
+            it[currentEditPosition] = item
+        }
+    }
 
     fun addItem(item: TodoItem) {
-        _todoItems.value = _todoItems.value!! + listOf(item)
+        todoItems = todoItems + listOf(item)
     }
 
     fun removeItem(item: TodoItem) {
-        _todoItems.value = _todoItems.value!!.toMutableList().also {
+        todoItems = todoItems.toMutableList().also {
             it.remove(item)
         }
+        onEditDone()
     }
 }
