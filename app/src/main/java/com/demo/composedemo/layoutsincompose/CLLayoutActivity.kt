@@ -184,7 +184,7 @@ fun StaggeredGrid(
         val width = rowWidths.maxOrNull()
             ?.coerceIn(constrains.minHeight.rangeTo(constrains.maxWidth)) ?: constrains.minWidth
         // 高是高度约束下的每行最高的总和
-        val height = rowHeights.sumBy { it }
+        val height = rowHeights.sumOf { it }
             .coerceIn(constrains.minHeight.rangeTo(constrains.maxHeight))
         // 每行的 Y 坐标基于前面行的高度累计
         val rowY = IntArray(rows) { 0 }
