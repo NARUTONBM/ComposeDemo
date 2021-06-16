@@ -43,7 +43,6 @@ fun ComposeDemoTheme(
     MaterialTheme(
         colors = if (darkTheme) DarkColorPalette else LightColorPalette,
         typography = ComposeDemoTypography,
-        shapes = ComposeDemoShape,
         content = content
     )
 }
