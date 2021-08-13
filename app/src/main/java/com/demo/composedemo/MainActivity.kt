@@ -21,6 +21,7 @@ import com.demo.composedemo.animation.Home
 import com.demo.composedemo.ui.theme.ComposeDemoTheme
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
