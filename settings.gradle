@@ -1,3 +1,4 @@
-rootProject.name = "CompseDemo"
+rootProject.name = "ComposeDemo"
 include ':app'
 include ':navigation'
+include ':base'

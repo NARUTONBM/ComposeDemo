@@ -1,0 +1,78 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 30
+
+    defaultConfig {
+        applicationId "com.demo.composebase"
+        minSdk 21
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    api "androidx.core:core-ktx:$ktx_version"
+    api "androidx.appcompat:appcompat:$appCompatVersion"
+    api "com.google.android.material:material:$material_version"
+    api "androidx.compose.material:material-icons-extended:$compose_version"
+    api "androidx.fragment:fragment-ktx:$fragment_version"
+
+    // Compose
+    api "androidx.compose.runtime:runtime:$compose_version"
+    api "androidx.compose.ui:ui:$compose_version"
+    api "androidx.compose.ui:ui-tooling:$compose_version"
+    api "androidx.constraintlayout:constraintlayout-compose:$constraintlayout_compose_version"
+    api "androidx.compose.animation:animation:$compose_version"
+    api "androidx.compose.foundation:foundation:$compose_version"
+    api "androidx.compose.foundation:foundation-layout:$compose_version"
+    api "androidx.compose.material:material:$compose_version"
+    api "androidx.compose.material:material:$compose_version"
+    api "androidx.compose.runtime:runtime:$compose_version"
+    api "androidx.compose.runtime:runtime-livedata:$compose_version"
+    api "androidx.compose.material:material-icons-extended:$compose_version"
+    api "androidx.activity:activity-compose:$activity_compose_version"
+    api "androidx.navigation:navigation-compose:$navigation_compose_version"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    api "androidx.lifecycle:lifecycle-viewmodel-compose:$viewmodel_compose_version"
+
+    // Testing dependencies
+    testApi "junit:junit:$junit_version"
+    testApi "com.google.truth:truth:$truth_version"
+    androidTestApi "androidx.test.ext:junit:$junit_ext_version"
+    androidTestApi "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestApi "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
+    androidTestApi "androidx.arch.core:core-testing:$coreTestingVersion"
+    androidTestApi "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
+
+    // Compose testing dependencies
+    androidTestApi "androidx.compose.ui:ui-test:$compose_version"
+    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
+}
