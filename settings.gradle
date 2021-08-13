@@ -1,2 +1,3 @@
 rootProject.name = "CompseDemo"
 include ':app'
+include ':navigation'

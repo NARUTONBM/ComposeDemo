@@ -1,0 +1,74 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.demo.composenavi
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import com.demo.composenavi.ui.components.RallyTabRow
+import com.demo.composenavi.ui.theme.RallyTheme
+
+/**
+ * This Activity recreates part of the Rally Material Study from
+ * https://material.io/design/material-studies/rally.html
+ *
+ * @see <a href="https://developer.android.google.cn/codelabs/jetpack-compose-navigation?continue=https%3A%2F%2Fdeveloper.android.google
+ * .cn%2Fcourses%2Fpathways%2Fcompose%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fjetpack-compose-navigation#0">See this </a>for more information about 【Jetpack
+ * Compose Navigation】
+ */
+class RallyActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RallyApp()
+        }
+    }
+}
+
+@Composable
+fun RallyApp() {
+    RallyTheme {
+        val allScreens = RallyScreen.values().toList()
+        var currentScreen by rememberSaveable { mutableStateOf(RallyScreen.Overview) }
+        Scaffold(
+            topBar = {
+                RallyTabRow(
+                    allScreens = allScreens,
+                    onTabSelected = { screen -> currentScreen = screen },
+                    currentScreen = currentScreen
+                )
+            }
+        ) { innerPadding ->
+            Box(Modifier.padding(innerPadding)) {
+                currentScreen.content(
+                    onScreenChange = { screen ->
+                        currentScreen = RallyScreen.valueOf(screen)
+                    }
+                )
+            }
+        }
+    }
+}
