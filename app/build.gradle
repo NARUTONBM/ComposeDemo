@@ -49,5 +49,8 @@ android {
 
 dependencies {
 
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "com.google.truth:truth:$truth_version"
+
     implementation project(':base')
 }
