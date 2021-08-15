@@ -60,14 +60,6 @@ dependencies {
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-viewmodel-compose:$viewmodel_compose_version"
 
-    // Testing dependencies
-    androidTestApi "androidx.test.ext:junit:$junit_ext_version"
-    androidTestApi "androidx.test.espresso:espresso-core:$espresso_version"
-    androidTestApi "androidx.test.espresso:espresso-contrib:$espresso_version"
-    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
-    androidTestApi "androidx.arch.core:core-testing:$coreTestingVersion"
-    androidTestApi "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
-
     // Compose testing dependencies
     androidTestApi "androidx.compose.ui:ui-test:$compose_version"
     androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"

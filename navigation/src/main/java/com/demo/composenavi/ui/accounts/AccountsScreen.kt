@@ -23,9 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.demo.composenavi.R
+import com.demo.composenavi.data.Account
 import com.demo.composenavi.ui.components.AccountRow
 import com.demo.composenavi.ui.components.StatementBody
-import com.example.compose.rally.data.Account
 
 /**
  * The Accounts screen.

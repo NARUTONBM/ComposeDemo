@@ -16,21 +16,25 @@
 
 package com.demo.composenavi.ui.bills
 
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import com.demo.composenavi.R
+import com.demo.composenavi.data.Bill
 import com.demo.composenavi.ui.components.BillRow
 import com.demo.composenavi.ui.components.StatementBody
-import com.example.compose.rally.data.Bill
 
 /**
  * The Bills screen.
  */
 @Composable
-fun BillsBody(bills: List<Bill>) {
+fun BillsBody(
+    bills: List<Bill>,
+    onBillNameClick: (String) -> Unit = {},
+) {
     StatementBody(
         modifier = Modifier.clearAndSetSemantics { contentDescription = "Bills" },
         items = bills,
@@ -39,7 +43,36 @@ fun BillsBody(bills: List<Bill>) {
         amountsTotal = bills.map { bill -> bill.amount }.sum(),
         circleLabel = stringResource(R.string.due),
         rows = { bill ->
-            BillRow(bill.name, bill.due, bill.amount, bill.color)
+            BillRow(
+                modifier = Modifier.clickable {
+                    onBillNameClick(bill.name)
+                },
+                bill.name,
+                bill.due,
+                bill.amount,
+                bill.color
+            )
         }
     )
+}
+
+/**
+ * Detail screen for a single bill.
+ */
+@Composable
+fun SingleBillBody(bill: Bill) {
+    StatementBody(
+        items = listOf(bill),
+        colors = { bill.color },
+        amounts = { bill.amount },
+        amountsTotal = bill.amount,
+        circleLabel = bill.name,
+    ) { row ->
+        BillRow(
+            name = row.name,
+            due = row.due,
+            amount = row.amount,
+            color = row.color
+        )
+    }
 }

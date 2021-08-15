@@ -24,16 +24,17 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
+import com.demo.composenavi.data.UserData
 import com.demo.composenavi.ui.accounts.AccountsBody
+import com.demo.composenavi.ui.accounts.SingleAccountBody
 import com.demo.composenavi.ui.bills.BillsBody
+import com.demo.composenavi.ui.bills.SingleBillBody
 import com.demo.composenavi.ui.components.RallyTabRow
 import com.demo.composenavi.ui.overview.OverviewBody
 import com.demo.composenavi.ui.theme.RallyTheme
-import com.example.compose.rally.data.UserData
 
 /**
  * This Activity recreates part of the Rally Material Study from
@@ -73,26 +74,85 @@ fun RallyApp() {
                 )
             }
         ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = RallyScreen.Overview.name,
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                // 定义导航路线图
-                composable(RallyScreen.Overview.name) {
-                    OverviewBody(
-                        onClickSeeAllAccounts = { navController.navigate(RallyScreen.Accounts.name) },
-                        onClickSeeAllBills = { navController.navigate(RallyScreen.Bills.name) })
-                }
-
-                composable(RallyScreen.Accounts.name) {
-                    AccountsBody(accounts = UserData.accounts)
-                }
-
-                composable(RallyScreen.Bills.name) {
-                    BillsBody(bills = UserData.bills)
-                }
-            }
+            RallyNavHost(navController, Modifier.padding(innerPadding))
         }
     }
+}
+
+@Composable
+private fun RallyNavHost(navController: NavHostController, modifier: Modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = RallyScreen.Overview.name,
+        modifier = modifier
+    ) {
+        // 定义导航路线图
+        composable(RallyScreen.Overview.name) {
+            OverviewBody(
+                onClickSeeAllAccounts = { navController.navigate(RallyScreen.Accounts.name) },
+                onClickSeeAllBills = { navController.navigate(RallyScreen.Bills.name) },
+                onAccountClick = { name ->
+                    navigateToSingle(navController, RallyScreen.Accounts.name, name)
+                },
+                onBillClick = { name ->
+                    navigateToSingle(navController, RallyScreen.Bills.name, name)
+                })
+        }
+
+        composable(RallyScreen.Accounts.name) {
+            AccountsBody(accounts = UserData.accounts) { name ->
+                navigateToSingle(
+                    navController = navController,
+                    rootName = RallyScreen.Accounts.name,
+                    name = name
+                )
+            }
+        }
+
+        composable(RallyScreen.Bills.name) {
+            BillsBody(bills = UserData.bills) { name ->
+                navigateToSingle(
+                    navController = navController,
+                    rootName = RallyScreen.Bills.name,
+                    name = name
+                )
+            }
+        }
+
+        val accountsName = RallyScreen.Accounts.name
+        composable(
+            route = "$accountsName/{name}",
+            arguments = listOf(
+                navArgument("name") {
+                    type = NavType.StringType
+                }
+            )) { entry ->
+            // 取得 NavBackStackEntry 中的 name 参数
+            val accountName = entry.arguments?.getString("name")
+            // 找到 UserData 中第一个匹配的 name
+            val account = UserData.getAccount(accountName)
+            // 将 account 传给 SingleAccountBody
+            SingleAccountBody(account = account)
+        }
+
+        val billsName = RallyScreen.Bills.name
+        composable(
+            route = "$billsName/{name}",
+            arguments = listOf(
+                navArgument("name") {
+                    type = NavType.StringType
+                }
+            )) { entry ->
+            // 取得 NavBackStackEntry 中的 name 参数
+            val billName = entry.arguments?.getString("name")
+            // 找到 UserData 中第一个匹配的 name
+            val bill = UserData.getBill(billName)
+            // 将 account 传给 SingleBillBody
+            SingleBillBody(bill = bill)
+        }
+    }
+}
+
+private fun navigateToSingle(navController: NavHostController, rootName: String, name: String) {
+    navController.navigate("$rootName/$name")
 }

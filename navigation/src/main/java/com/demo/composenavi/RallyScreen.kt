@@ -22,10 +22,10 @@ import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.demo.composenavi.data.UserData
 import com.demo.composenavi.ui.accounts.AccountsBody
 import com.demo.composenavi.ui.bills.BillsBody
 import com.demo.composenavi.ui.overview.OverviewBody
-import com.example.compose.rally.data.UserData
 
 /**
  * Screen metadata for Rally.

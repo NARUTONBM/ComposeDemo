@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.compose.rally.data
+package com.demo.composenavi.data
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
@@ -96,4 +96,12 @@ object UserData {
             Color(0xFFFFAC12)
         )
     )
+
+    fun getAccount(accountName: String?): Account {
+        return accounts.first { it.name == accountName }
+    }
+
+    fun getBill(billName: String?): Bill {
+        return bills.first { it.name == billName }
+    }
 }
