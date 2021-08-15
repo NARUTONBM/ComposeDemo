@@ -81,7 +81,7 @@ fun RallyApp() {
 }
 
 @Composable
-private fun RallyNavHost(navController: NavHostController, modifier: Modifier) {
+fun RallyNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         startDestination = RallyScreen.Overview.name,
