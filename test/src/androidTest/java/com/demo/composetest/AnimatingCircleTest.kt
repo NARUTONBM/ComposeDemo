@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import com.demo.composetest.ui.components.RallyTopAppBar
+import com.demo.composetest.ui.overview.OverviewBody
 import org.junit.Rule
 import org.junit.Test
 
@@ -55,5 +56,16 @@ class AnimatingCircleTest {
                 useUnmergedTree = true
             )
             .assertExists()
+    }
+
+    @Test
+    fun overviewScreen_alertDisplayed() {
+        composeTestRule.setContent {
+            OverviewBody()
+        }
+
+        composeTestRule
+            .onNodeWithText("Alerts")
+            .assertIsDisplayed()
     }
 }
