@@ -1,8 +1,9 @@
 package com.demo.composetest
 
-import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toUpperCase
 import com.demo.composetest.ui.components.RallyTopAppBar
 import org.junit.Rule
 import org.junit.Test
@@ -43,8 +44,16 @@ class AnimatingCircleTest {
             )
         }
 
+        composeTestRule.onRoot(useUnmergedTree = true).printToLog("currentLabelExists")
+
         composeTestRule
-            .onNodeWithContentDescription(RallyScreen.Accounts.name)
+            .onNode(
+                hasText(RallyScreen.Accounts.name.toUpperCase(Locale.current)) and
+                        hasParent(
+                            hasContentDescription(RallyScreen.Accounts.name)
+                        ),
+                useUnmergedTree = true
+            )
             .assertExists()
     }
 }
