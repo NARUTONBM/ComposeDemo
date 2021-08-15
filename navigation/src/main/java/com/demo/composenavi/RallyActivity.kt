@@ -41,9 +41,7 @@ import com.demo.composenavi.ui.theme.RallyTheme
  * This Activity recreates part of the Rally Material Study from
  * https://material.io/design/material-studies/rally.html
  *
- * @see <a href="https://developer.android.google.cn/codelabs/jetpack-compose-navigation?continue=https%3A%2F%2Fdeveloper.android.google
- * .cn%2Fcourses%2Fpathways%2Fcompose%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fjetpack-compose-navigation#0">See this </a>for more information about 【Jetpack
- * Compose Navigation】
+ * @see <a href="https://developer.android.google.cn/codelabs/jetpack-compose-navigation#0">See this </a>for more information about 【Jetpack Compose Navigation】
  *
  * @see <a href="https://developer.android.google.cn/jetpack/compose/kotlin#trailing-lambdas">see this</a> for more information about trailing lambdas
  */

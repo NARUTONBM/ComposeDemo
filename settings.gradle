@@ -2,3 +2,4 @@ rootProject.name = "ComposeDemo"
 include ':app'
 include ':navigation'
 include ':base'
+include ':test'
