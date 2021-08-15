@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navDeepLink
 import com.demo.composenavi.data.UserData
 import com.demo.composenavi.ui.accounts.AccountsBody
 import com.demo.composenavi.ui.accounts.SingleAccountBody
@@ -126,6 +127,8 @@ private fun RallyNavHost(navController: NavHostController, modifier: Modifier) {
                 navArgument("name") {
                     type = NavType.StringType
                 }
+            ), deepLinks = listOf(
+                navDeepLink { uriPattern = "rally://$accountsName/{name}" }
             )) { entry ->
             // 取得 NavBackStackEntry 中的 name 参数
             val accountName = entry.arguments?.getString("name")
@@ -142,6 +145,8 @@ private fun RallyNavHost(navController: NavHostController, modifier: Modifier) {
                 navArgument("name") {
                     type = NavType.StringType
                 }
+            ), deepLinks = listOf(
+                navDeepLink { uriPattern = "rally://$billsName/{name}" }
             )) { entry ->
             // 取得 NavBackStackEntry 中的 name 参数
             val billName = entry.arguments?.getString("name")
